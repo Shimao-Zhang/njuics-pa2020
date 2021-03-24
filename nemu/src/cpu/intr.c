@@ -22,8 +22,8 @@ void raise_intr(uint8_t intr_no)
 	//operand_write(&get);
 	get.data_size=32;
 	get.val=cpu.eip;
-    //if(cpu.eip<=0x30000)
-        //printf("\n%x\n",cpu.eip);
+    	//if(cpu.eip<=0x30000)
+            //printf("\n%x\n",cpu.eip);
 	assert(cpu.eip>=0x30000);
 	cpu.esp-=get.data_size/8;
 	get.addr=cpu.esp;
@@ -34,13 +34,13 @@ void raise_intr(uint8_t intr_no)
 	paddr_t addr=(uint32_t)hw_mem+page_translate(segment_translate(cpu.idtr.base+8*intr_no,SREG_DS));
 	memcpy(gatedesc.val,(void*)addr,sizeof(gatedesc));
 	if(gatedesc.type==0xd)
-    {
+    	{
 	    cpu.eflags.IF=0;
-    }
-    if(gatedesc.type==0xe)
-    {
-        cpu.eflags.IF=1;
-    }
+    	}
+    	if(gatedesc.type==0xe)
+    	{
+            cpu.eflags.IF=1;
+   	}
 	cpu.eip=(gatedesc.offset_31_16<<16)|(gatedesc.offset_15_0);
 	assert(cpu.eip>=0x30000);
 #endif
